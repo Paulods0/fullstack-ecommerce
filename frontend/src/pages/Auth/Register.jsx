@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { AiOutlineMail, AiOutlineUser } from "react-icons/ai"
 import { PiPasswordDuotone } from "react-icons/pi"
 import { ImLocation2 } from "react-icons/im"
@@ -7,12 +7,16 @@ import { BiSolidContact } from "react-icons/bi"
 
 import api from "../../config/axiosConfig"
 
+import toast from "react-hot-toast"
+
 const Register = () => {
   const [email, setEmail] = useState("")
   const [name, setName] = useState("")
   const [phone, setPhone] = useState("")
   const [address, setAddress] = useState("")
   const [password, setPassword] = useState("")
+
+  const navigate = useNavigate()
 
   const data = {
     email,
@@ -26,9 +30,16 @@ const Register = () => {
     e.preventDefault()
     try {
       const response = await api.post("/auth/register", data)
-      console.log(response.data)
+      if (response.data.success) {
+        console.log(response.data)
+        toast.success(response.data.message)
+        navigate("/login")
+      } else {
+        toast.error(response.data.message)
+      }
     } catch (error) {
       console.log(error)
+      toast.error("Something went wrong!!")
     }
 
     setEmail("")
@@ -49,7 +60,7 @@ const Register = () => {
             Register
           </h1>
           <section className="w-full flex flex-col gap-3">
-            <div className="flex w-full gap-2 items-center border border-zinc-800 p-2">
+            <div className="flex w-full  gap-2 items-center border border-zinc-800 p-2">
               <div className="border-r border-r-gray-700 px-2 w-[40px] ">
                 <AiOutlineUser />
               </div>
@@ -94,7 +105,7 @@ const Register = () => {
                   value={phone}
                   name="phone"
                   className="w-full outline-none border-none "
-                  placeholder="Enter your address"
+                  placeholder="Enter your phone"
                 />
               </div>
             </div>

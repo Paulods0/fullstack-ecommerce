@@ -1,10 +1,15 @@
 import React from "react"
-import Layout from "../components/Layout"
+import { useAuth } from "../context/auth"
 
 const Home = () => {
+  const [auth, setAuth] = useAuth()
+
   return (
-    <main title={"Best offers"} className="w-full">
-      <section className="w-[1200px] mx-auto">Home</section>
+    <main>
+      <div className="w-[200px]">
+        <h1>Home </h1>
+        <p className="w-full">{JSON.stringify(auth, null, 4)}</p>
+      </div>
     </main>
   )
 }

@@ -1,13 +1,20 @@
 import React, { useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { AiOutlineMail } from "react-icons/ai"
 import { PiPasswordDuotone } from "react-icons/pi"
 
 import api from "../../config/axiosConfig.js"
+import { toast } from "react-toastify"
+
+import { useAuth } from "../../context/auth.jsx"
 
 const Login = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const navigate = useNavigate()
+  const [auth, setAuth] = useAuth()
+
+  // const [] = useCookie()
 
   const data = {
     email,
@@ -16,11 +23,20 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    
+
     try {
       const response = await api.post("/auth/login", data)
       console.log(response)
+      setAuth({
+        ...auth,
+        user: response.data.user,
+        token: response.data.token,
+      })
+
+      window.localStorage.setItem("auth", JSON.stringify(response.data))
+      navigate("/home")
     } catch (error) {
+      toast.error(response.data.message)
       console.log(error)
     }
     setEmail("")

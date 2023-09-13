@@ -2,6 +2,7 @@ import React from "react"
 import Navbar from "./Navbar"
 import Footer from "./Footer"
 import { Helmet } from "react-helmet"
+import { Toaster } from "react-hot-toast"
 
 const Layout = ({ children, title, description, keywords, author }) => {
   return (
@@ -15,6 +16,7 @@ const Layout = ({ children, title, description, keywords, author }) => {
       </Helmet>
       <Navbar />
       <main className="min-h-[80vh] w-full">
+        <Toaster />
         <section className="w-[1200px] mx-auto">{children}</section>
       </main>
       <Footer />

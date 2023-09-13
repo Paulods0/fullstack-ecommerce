@@ -9,6 +9,9 @@ import PageNotFound from "./pages/PageNotFound"
 import Login from "./pages/Auth/Login"
 import Register from "./pages/Auth/Register"
 
+// import { ToastContainer } from "react-toastify"
+// import "react-toastify/dist/ReactToastify.css"
+
 function App() {
   return (
     <>
