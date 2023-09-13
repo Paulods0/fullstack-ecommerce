@@ -1,50 +1,46 @@
 import React, { useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
-import { AiOutlineMail } from "react-icons/ai"
+import { useNavigate } from "react-router-dom"
+import { AiOutlineMail, AiOutlineQuestionCircle } from "react-icons/ai"
 import { PiPasswordBold } from "react-icons/pi"
+import toast from "react-hot-toast"
+import api from "../../config/axiosConfig"
+import { useLocation } from "react-router-dom"
+// import "../../styles/AuthStyles.css"
 
-import api from "../../config/axiosConfig.js"
-import { toast } from "react-hot-toast"
-
-import { useAuth } from "../../context/auth.jsx"
-
-const Login = () => {
+const ForgotPassword = () => {
   const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const navigate = useNavigate()
-  const [auth, setAuth] = useAuth()
+  const [newPassword, setNewPassword] = useState("")
+  const [answer, setAnswer] = useState("")
 
-  // const [] = useCookie()
+  const location = useLocation()
+  const navigate = useNavigate()
 
   const data = {
     email,
-    password,
+    newPassword,
+    answer,
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+
     try {
-      const response = await api.post("/auth/login", data)
+      const response = await api.post("/auth/forgot-password", data)
       console.log(response)
       if (response && response.data.success) {
-        setAuth({
-          ...auth,
-          user: response.data.user,
-          token: response.data.token,
-        })
-        window.localStorage.setItem("auth", JSON.stringify(response.data))
         toast.success(response.data.message)
-        navigate("/home")
-        setEmail("")
-        setPassword("")
+        // navigate(location.state)
+        navigate("/login")
+        window.location = ("/login")
       } else {
-        console.log(response.data.error)
-        toast.error(response.data.error)
+        toast.error("Error")
       }
     } catch (error) {
-      toast.error(error.response.data.message)
       console.log(error)
+      toast.error("Something went wrong!")
     }
+    setEmail("")
+    setNewPassword("")
   }
 
   return (
@@ -55,7 +51,7 @@ const Login = () => {
           className="w-[350px] h-[350px] p-4 flex flex-col items-center justify-around border border-black"
         >
           <h1 className="text-[25px] font-bold py-2 w-full text-black text-center">
-            Login
+            Reset Passoword
           </h1>
           <section className="w-full flex flex-col gap-2">
             <div className="flex w-full gap-2 items-center border border-zinc-800 p-2">
@@ -76,38 +72,39 @@ const Login = () => {
             </div>
             <div className="flex w-full gap-2 items-center border border-zinc-800 p-2">
               <div className="border-r border-r-gray-700 px-2 w-[40px] ">
+                <AiOutlineQuestionCircle />
+              </div>
+              <div className="relative w-full">
+                <input
+                  onChange={(e) => setAnswer(e.target.value)}
+                  id="answer"
+                  type="answer"
+                  value={answer}
+                  name="answer"
+                  className="w-full outline-none border-none "
+                  placeholder="Enter your favorite sport"
+                />
+              </div>
+            </div>
+            <div className="flex w-full gap-2 items-center border border-zinc-800 p-2">
+              <div className="border-r border-r-gray-700 px-2 w-[40px] ">
                 <PiPasswordBold />
               </div>
               <div className="relative w-full">
                 <input
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => setNewPassword(e.target.value)}
                   id="password"
                   type="password"
-                  value={password}
+                  value={newPassword}
                   name="password"
                   className="w-full outline-none border-none "
-                  placeholder="Enter your password"
+                  placeholder="Enter your new password"
                 />
               </div>
             </div>
             <button className="mt-3 w-full bg-blue-600 px-2 py-1 text-white hover:scale-90 duration-200 transition-all">
-              Login
+              Reset password
             </button>
-            <div className="flex flex-col items-center justify-center">
-              <div className="flex w-full justify-center ">
-                {" "}
-                <p>Don't have an account?</p>{" "}
-                <Link to="/register" className="ml-1 underline text-blue-500">
-                  Register now
-                </Link>
-              </div>
-              <Link
-                to={"/forgot-password"}
-                className="text-[12px] mt-2 text-blue-500"
-              >
-                Forgot your password?
-              </Link>
-            </div>
           </section>
         </form>
       </section>
@@ -115,4 +112,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default ForgotPassword

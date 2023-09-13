@@ -1,7 +1,11 @@
 import React, { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import { AiOutlineMail, AiOutlineUser } from "react-icons/ai"
-import { PiPasswordDuotone } from "react-icons/pi"
+import {
+  AiOutlineMail,
+  AiOutlineUser,
+  AiOutlineQuestionCircle,
+} from "react-icons/ai"
+import { PiPasswordBold } from "react-icons/pi"
 import { ImLocation2 } from "react-icons/im"
 import { BiSolidContact } from "react-icons/bi"
 
@@ -15,6 +19,7 @@ const Register = () => {
   const [phone, setPhone] = useState("")
   const [address, setAddress] = useState("")
   const [password, setPassword] = useState("")
+  const [answer, setAnswer] = useState("")
 
   const navigate = useNavigate()
 
@@ -24,6 +29,7 @@ const Register = () => {
     phone,
     address,
     password,
+    answer,
   }
 
   const handleSubmit = async (e) => {
@@ -95,6 +101,22 @@ const Register = () => {
             </div>
             <div className="flex w-full gap-2 items-center border border-zinc-800 p-2">
               <div className="border-r border-r-gray-700 px-2 w-[40px] ">
+                <AiOutlineQuestionCircle />
+              </div>
+              <div className="relative w-full">
+                <input
+                  id="answer"
+                  type="answer"
+                  onChange={(e) => setAnswer(e.target.value)}
+                  value={answer}
+                  name="answer"
+                  className="w-full outline-none border-none "
+                  placeholder="What is your favorite sports?"
+                />
+              </div>
+            </div>
+            <div className="flex w-full gap-2 items-center border border-zinc-800 p-2">
+              <div className="border-r border-r-gray-700 px-2 w-[40px] ">
                 <BiSolidContact />
               </div>
               <div className="relative w-full">
@@ -129,7 +151,7 @@ const Register = () => {
 
             <div className="flex w-full gap-2 items-center border border-zinc-800 p-2">
               <div className="border-r border-r-gray-700 px-2 w-[40px] ">
-                <PiPasswordDuotone />
+                <PiPasswordBold />
               </div>
               <div className="w-full ">
                 <input

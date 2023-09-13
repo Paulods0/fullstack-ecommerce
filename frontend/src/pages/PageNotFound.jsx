@@ -14,9 +14,9 @@ const PageNotFound = () => {
           </h3>
           <Link
             to="/"
-            className="p-3 rounded-md border border-zinc-400 w-[120px] hover:bg-zinc-100 duration-200 text-center flex items-center gap-2"
+            className="p-3 rounded-md border-2 border-zinc-900 hover:w-[120px] w-[110px] hover:bg-zinc-100 duration-300 justify-center flex items-center gap-2"
           >
-            <span>
+            <span className=" items-center text-center duration-300">
               <BsArrowLeft />
             </span>
             Go back
