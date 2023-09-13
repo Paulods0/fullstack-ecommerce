@@ -10,24 +10,28 @@ const registerController = async (req, res) => {
     //validations
     if (!name) {
       return res.status(400).send({
+        success: false,
         error: "Missing required field.",
         message: "The name field is required!",
       })
     }
     if (!email) {
       return res.status(400).send({
+        success: false,
         error: "Missing required field.",
         message: "The email field is required!",
       })
     }
     if (!address) {
       return res.status(400).send({
+        success: false,
         error: "Missing required field.",
         message: "The address field is required!",
       })
     }
     if (!phone) {
       return res.status(400).send({
+        success: false,
         error: "Missing required field.",
         message: "The phone field is required!",
       })
@@ -36,6 +40,7 @@ const registerController = async (req, res) => {
     const existingUserEmail = await User.findOne({ email })
     if (existingUserEmail) {
       return res.status(409).send({
+        success: false,
         error: "Conflict!",
         message: "Already registed, please login!",
       })
@@ -50,14 +55,14 @@ const registerController = async (req, res) => {
     }).save()
 
     res.status(200).json({
-      message: "Success!",
-      failed: false,
+      message: "Successfully registered!",
+      success: true,
       data: user,
     })
   } catch (error) {
     res.status(500).json({
-      message: "Failed",
-      failed: true,
+      message: "Something went wrong!!",
+      success: false,
     })
   }
 }
@@ -67,6 +72,7 @@ const loginController = async (req, res) => {
   try {
     if (!email || !password) {
       return res.status(404).json({
+        success: false,
         error: "User not found",
         messge: "Invalid email or password!",
       })
@@ -80,6 +86,7 @@ const loginController = async (req, res) => {
     const isSamePassword = comparePassword(password, user.password)
     if (!isSamePassword) {
       return res.status(401).json({
+        success: false,
         error: "Authentication failed!",
         message: "Invalid password!",
       })
@@ -89,7 +96,7 @@ const loginController = async (req, res) => {
     })
     res.status(200).json({
       success: true,
-      message: "succesfuly logged in",
+      message: "Success!!",
       user: {
         name: user.name,
         email: user.email,
@@ -100,7 +107,7 @@ const loginController = async (req, res) => {
     })
   } catch (error) {
     res.status(401).json({
-      status: "failed",
+      success: false,
       message: error,
     })
   }
