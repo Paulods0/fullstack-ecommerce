@@ -13,7 +13,7 @@ const PageNotFound = () => {
             Page not found!
           </h3>
           <Link
-            to="/"
+            onClick={() => window.history.go(-1)}
             className="p-3 rounded-md border-2 border-zinc-900 hover:w-[120px] w-[110px] hover:bg-zinc-100 duration-300 justify-center flex items-center gap-2"
           >
             <span className=" items-center text-center duration-300">

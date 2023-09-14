@@ -26,21 +26,15 @@ const ForgotPassword = () => {
 
     try {
       const response = await api.post("/auth/forgot-password", data)
-      console.log(response)
-      if (response && response.data.success) {
+      if (response.data.succsess) {
         toast.success(response.data.message)
-        // navigate(location.state)
+        setEmail("")
+        setNewPassword("")
         navigate("/login")
-        window.location = ("/login")
-      } else {
-        toast.error("Error")
       }
     } catch (error) {
-      console.log(error)
-      toast.error("Something went wrong!")
+      toast.error("Please fill in all the required fields")
     }
-    setEmail("")
-    setNewPassword("")
   }
 
   return (

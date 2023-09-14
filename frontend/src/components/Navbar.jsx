@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { CiShoppingCart, CiShop } from "react-icons/ci"
 import { useAuth } from "../context/auth"
+import UserModal from "./UserModal"
 
 const Navbar = () => {
   const [isActive, setIsActive] = useState(null)
@@ -10,9 +11,8 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     await setAuth({ ...auth, user: null, token: "" }),
-    localStorage.removeItem("auth")
+      localStorage.removeItem("auth")
     navigate("/login")
-    // window.location = "/login"
   }
 
   const nav_links = [
@@ -22,11 +22,11 @@ const Navbar = () => {
     },
     {
       display: "Category",
-      path: "/register",
+      path: "/category",
     },
     {
       display: auth.user ? (
-        <button onClick={handleLogout}>Logout</button>
+        <UserModal auth={auth} handleLogout={handleLogout} user={auth.user} />
       ) : (
         "Login"
       ),
@@ -48,7 +48,7 @@ const Navbar = () => {
           <CiShop />
           <h1 className="font-bold ">ShopNest</h1>
         </Link>
-        <ul className="flex gap-4">
+        <ul className="flex gap-3 relative">
           {nav_links.map((link, index) => (
             <li key={index}>
               <Link
@@ -64,11 +64,7 @@ const Navbar = () => {
               </Link>
             </li>
           ))}
-          {/* {auth.user && (
-            <button onClick={() => alert("Clicked")} className="">
-              Logout
-            </button>
-          )} */}
+
           <div className="flex items-center">
             <CiShoppingCart className="text-[24px]" />
             (0)
