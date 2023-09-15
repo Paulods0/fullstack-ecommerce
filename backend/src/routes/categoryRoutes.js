@@ -5,6 +5,7 @@ const {
   getAllCategoryController,
   updateCategoryController,
   getSingleCategoryController,
+  deleteCategoryController,
 } = require("../controllers/categoryController")
 const { isAdmin, requireSignIn } = require("../middlewares/authMiddleware")
 
@@ -17,7 +18,7 @@ router.post(
 )
 //get all categories
 router.get("/all-categories", getAllCategoryController)
-router.get("/sibgle-categories/:id", getSingleCategoryController)
+router.get("/single-category/:slug", getSingleCategoryController)
 
 //update category
 router.put(
@@ -25,5 +26,11 @@ router.put(
   requireSignIn,
   isAdmin,
   updateCategoryController
+)
+router.delete(
+  "/delete-category/:id",
+  requireSignIn,
+  isAdmin,
+  deleteCategoryController
 )
 module.exports = router

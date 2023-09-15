@@ -7,6 +7,8 @@ const connectDB = require("./config/db")
 
 const categoryRoute = require("./routes/categoryRoutes")
 const authRoute = require("./routes/authRoute")
+const productRoute = require("./routes/productRoute")
+
 const PORT = process.env.PORT || 8000
 
 //connect to db
@@ -23,6 +25,7 @@ app.use(morgan("dev"))
 //rest api
 app.use("/api/v1/auth", authRoute)
 app.use("/api/v1/category", categoryRoute)
+app.use("/api/v1/product", productRoute)
 
 app.listen(PORT, () => {
   console.log(

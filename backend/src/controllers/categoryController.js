@@ -77,9 +77,8 @@ const updateCategoryController = async (req, res) => {
 }
 
 const getSingleCategoryController = async (req, res) => {
-  const { id } = req.params
   try {
-    const category = await CategoryModel.findById({ _id: id })
+    const category = await CategoryModel.findOne({ slug: req.params.slug })
     if (!category) {
       return res.status(404).res.send({ message: "Not found" })
     }
@@ -88,9 +87,29 @@ const getSingleCategoryController = async (req, res) => {
       .send({ success: true, message: "Category found!", category })
   } catch (error) {
     console.log(error)
-    res.status(404).send({
+    res.status(500).send({
       success: false,
       message: "Something went wrong",
+    })
+  }
+}
+
+const deleteCategoryController = async (req, res) => {
+  const { id } = req.params
+  try {
+    if (!id) {
+      return res.status(404).send({ message: "Couldn't find the category" })
+    }
+    await CategoryModel.findByIdAndDelete({ _id: id })
+    res.status(200).send({
+      success: true,
+      message: "Successfuly deleted!",
+    })
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      message: "Something went wrong while deleting",
+      error,
     })
   }
 }
@@ -100,4 +119,5 @@ module.exports = {
   getAllCategoryController,
   updateCategoryController,
   getSingleCategoryController,
+  deleteCategoryController,
 }

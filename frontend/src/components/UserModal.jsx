@@ -56,9 +56,9 @@ const UserModal = ({ auth, handleLogout }) => {
             <Link
               to={`/dashboard/${auth?.user?.role === 1 ? "admin" : "user"}`}
               id="userModal"
-              className="text-center mt-2 text-white bg-zinc-800 hover:scale-90 duration-300"
+              className="text-center mt-2 p-1  text-white bg-blue-800 hover:scale-90 duration-300"
             >
-              Go to dashboard
+              Go to Dashboard
             </Link>
             <button
               onClick={handleLogout}
