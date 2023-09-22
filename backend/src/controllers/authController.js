@@ -1,4 +1,5 @@
 const { hashPassword, comparePassword } = require("../helpers/authHelper")
+const UserModel = require("../models/UserModel")
 const User = require("../models/UserModel")
 const jwt = require("jsonwebtoken")
 
@@ -163,7 +164,32 @@ const forgotPasswordController = async (req, res) => {
     })
   }
 }
+//not equal - $gt greater than  -
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await UserModel.find({ name: { $ne: "admin" } }).sort({
+      createdAt: -1,
+    })
 
+    if (!users) {
+      return res.status(500).send({
+        success: false,
+        message: "Couldn't find the users",
+      })
+    }
+    res.status(200).send({
+      success: true,
+      message: "All users",
+      users,
+    })
+  } catch (error) {
+    res.status(404).send({
+      success: false,
+      message: "Error while fetching the users",
+      error,
+    })
+  }
+}
 //test controller
 const testController = async (req, res) => {
   console.log("Protected route")
@@ -174,4 +200,5 @@ module.exports = {
   loginController,
   testController,
   forgotPasswordController,
+  getAllUsers,
 }

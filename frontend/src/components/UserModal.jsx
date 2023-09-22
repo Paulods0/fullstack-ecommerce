@@ -29,7 +29,7 @@ const UserModal = ({ auth, handleLogout }) => {
       {isOpen ? (
         <div
           id="userModal"
-          className="absolute top-[50px] right-[80px] h-[190px] bg-white p-2 flex flex-col items-center border border-zinc-800 rounded-md w-[200px]"
+          className="absolute z-10 top-[50px] right-[80px] h-[190px] bg-white p-2 flex flex-col items-center border border-zinc-800 rounded-md w-[200px]"
         >
           <ul
             id="userModal"
@@ -55,13 +55,16 @@ const UserModal = ({ auth, handleLogout }) => {
             </li>
             <Link
               to={`/dashboard/${auth?.user?.role === 1 ? "admin" : "user"}`}
+              onClick={() => setIsOpen(false)}
               id="userModal"
               className="text-center mt-2 p-1  text-white bg-blue-800 hover:scale-90 duration-300"
             >
               Go to Dashboard
             </Link>
             <button
-              onClick={handleLogout}
+              onClick={() => {
+                handleLogout(), setIsOpen(false)
+              }}
               className="text-center mt-2 text-white bg-zinc-800 hover:scale-90 duration-300"
             >
               Logout

@@ -21,7 +21,7 @@ const createCategoryController = async (req, res) => {
     res.status(201).send({
       success: true,
       message: "Successfully created",
-      data: category,
+      category,
     })
   } catch (error) {
     console.log(error)
@@ -45,7 +45,7 @@ const getAllCategoryController = async (req, res) => {
     res.status(200).send({
       success: true,
       message: "success",
-      data: categories,
+      categories,
     })
   } catch (error) {}
 }
