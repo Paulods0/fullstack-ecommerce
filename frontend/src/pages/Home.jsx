@@ -13,17 +13,32 @@ const Home = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [checked, setChecked] = useState([])
   const [radio, setRadio] = useState([])
+  const [total, setTotal] = useState(0)
+  const [page, setPage] = useState(1)
+  const [loading, setLoading] = useState(false)
+
+  const getTotal = async () => {
+    try {
+      const { data } = await api.get("/product/product-count")
+      setTotal(data?.total)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const getAllProducts = async () => {
     try {
       setIsLoading(true)
-      const { data } = await api.get("/product/get-product")
+      setLoading(true)
+      const { data } = await api.get(`/product/product-list/${page}`)
       if (data?.success) {
         setProducts(data?.products)
         setIsLoading(false)
+        setLoading(false)
       }
     } catch (error) {
       console.log(error)
+      setLoading(false)
     }
   }
 
@@ -36,6 +51,11 @@ const Home = () => {
     }
   }
 
+  useEffect(() => {
+    getAllCategories()
+    getTotal()
+  }, [])
+
   const handleFilter = (value, id) => {
     let all = [...checked]
     if (value) {
@@ -44,6 +64,23 @@ const Home = () => {
       all = all.filter((c) => c !== id)
     }
     setChecked(all)
+  }
+
+  useEffect(() => {
+    if (page == 1) return
+    loadMore()
+  }, [page])
+
+  const loadMore = async () => {
+    try {
+      setLoading(true)
+      const { data } = await api.get(`/product/product-list/${page}`)
+      setProducts([...products, ...data?.products])
+      setLoading(false)
+    } catch (error) {
+      console.log(error)
+      setLoading(false)
+    }
   }
 
   const handleFilterByPrice = (value) => {
@@ -71,7 +108,6 @@ const Home = () => {
   useEffect(() => {
     if (!checked.length || !radio.length) {
       getAllProducts()
-      getAllCategories()
     }
   }, [checked.length, radio.length])
 
@@ -173,7 +209,19 @@ const Home = () => {
             </div>
           ))}
         </div>
-
+        {products && products.length < total && (
+          <div className="mt-10  w-full flex justify-start items-center">
+            <button
+              className="p-2 bg-yellow-500  text-black rounded-md"
+              onClick={(e) => {
+                e.preventDefault()
+                setPage(page + 1)
+              }}
+            >
+              {loading ? "Loading..." : "Load more"}
+            </button>
+          </div>
+        )}
         {isLoading && <LoaderSpinner color="red" secondaryColor="black" />}
       </section>
     </main>

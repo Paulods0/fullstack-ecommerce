@@ -199,6 +199,43 @@ const productFiltersController = async (req, res) => {
   }
 }
 
+const productCountController = async (req, res) => {
+  try {
+    const total = await ProductModel.find({}).estimatedDocumentCount()
+    res.status(200).send({
+      success: true,
+      total,
+    })
+  } catch (error) {
+    console.log(error)
+    res.status(400).send({
+      message: "Error in product count",
+      success: false,
+      error,
+    })
+  }
+}
+
+const productListController = async (req, res) => {
+  try {
+    const perPage = 6
+    const page = req.params.page ? req.params.page : 1
+
+    const products = await ProductModel.find({})
+      .select("-photo")
+      .skip((page - 1) * perPage)
+      .limit(perPage)
+      .sort({ createdAt: -1 })
+
+    res.status(200).send({ success: true, products })
+  } catch (error) {
+    console.log(error)
+    res
+      .status(400)
+      .send({ success: false, message: "Something went wrong", error })
+  }
+}
+
 module.exports = {
   createProduct,
   getAllProductController,
@@ -207,4 +244,6 @@ module.exports = {
   deleteProductController,
   updateProductController,
   productFiltersController,
+  productCountController,
+  productListController,
 }
