@@ -179,6 +179,26 @@ const updateProductController = async (req, res) => {
   }
 }
 
+const productFiltersController = async (req, res) => {
+  try {
+    const { checked, radio } = req.body
+    let args = {}
+    if (checked.length > 0) args.category = checked
+    if (radio.length > 0) args.price = { $gte: radio[0], $lte: radio[1] }
+
+    const products = await ProductModel.find(args)
+
+    res.status(200).send({
+      success: true,
+      products,
+    })
+  } catch (error) {
+    res
+      .status(400)
+      .send({ success: false, message: "Something went wrong", error })
+  }
+}
+
 module.exports = {
   createProduct,
   getAllProductController,
@@ -186,4 +206,5 @@ module.exports = {
   getProuctPhotoController,
   deleteProductController,
   updateProductController,
+  productFiltersController,
 }

@@ -89,11 +89,11 @@ const CreateCategory = () => {
   }, [])
 
   return (
-    <section className="  flex items-start h-[80vh] mt-4 gap-4 w-full">
+    <section className="flex items-start h-[80vh] mt-4 gap-4 w-full">
       <AdminMenu />
-      <section className=" w-[60vw] h-[400px] overflow-y-scroll px-3">
+      <section className="relative w-[60vw] h-[400px] overflow-y-scroll px-3">
         <h1 className="text-4xl mb-4 font-bold w-full">Manage Category</h1>
-        <table className="relative w-full">
+        <table className="w-full">
           <div>
             <CategoryForm
               handleSubmit={handleSubmit}
@@ -135,11 +135,6 @@ const CreateCategory = () => {
               </tr>
             ))}
           </tbody>
-          {isLoading ? (
-            <LoaderSpinner color="red" secondaryColor="black" />
-          ) : (
-            ""
-          )}
         </table>
         <Modal
           isOpen={isOpen}
@@ -149,6 +144,7 @@ const CreateCategory = () => {
           updatedName={updatedName}
           setUpdatedName={setUpdatedName}
         />
+        {isLoading ? <LoaderSpinner color="red" secondaryColor="black" /> : ""}
       </section>
     </section>
   )

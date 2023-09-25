@@ -5,6 +5,7 @@ const {
   getProuctPhotoController,
   deleteProductController,
   updateProductController,
+  productFiltersController,
 } = require("../controllers/productController")
 const { isAdmin, requireSignIn } = require("../middlewares/authMiddleware")
 const formidable = require("express-formidable")
@@ -34,5 +35,7 @@ router.put(
   formidable(),
   updateProductController
 )
+
+router.post("/product-filters", productFiltersController)
 
 module.exports = router

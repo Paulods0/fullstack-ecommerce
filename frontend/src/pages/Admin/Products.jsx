@@ -32,30 +32,32 @@ const Products = () => {
   return (
     <section className="flex items-start h-[80vh] mt-4 gap-4 w-[1200px]">
       <AdminMenu />
-      <div className="relative w-[800px] h-[400px] overflow-y-scroll px-2">
+      <div className="relative w-[800px]  h-[400px] overflow-y-auto px-2">
         <h1 className="text-4xl mb-4 font-bold w-full">All Products list</h1>
         <div className="w-full grid grid-cols-3 gap-4">
           {products?.map((product) => (
             <Link
               to={`/dashboard/admin/product/${product.slug}`}
               key={product._id}
-              className="w-full relative hover:scale-95 duration-200"
+              className="w-full hover:scale-95 duration-200"
             >
               <div className="w-full h-[150px]">
                 <img
                   src={`http://localhost:8080/api/v1/product/product-photo/${product._id}`}
                   alt="product-photo"
-                  className="w-full h-full object-cover rounded-t-md"
+                  className="w-full h-full object-cover object-center rounded-t-md"
                 />
               </div>
-              <div className="border border-zinc-500 rounded-b-md flex flex-col px-2 duration-200">
+              <div className="shadow-md rounded-b-md flex flex-col w-full px-2 duration-200">
                 <div className="flex gap-2">
                   <h2 className="font-bold">Name:</h2>
                   <span>{product.name}</span>
                 </div>
-                <div className="flex gap-2 w-full overflow-x-auto">
+                <div className="flex gap-2 ">
                   <h2 className="font-bold">Desc:</h2>
-                  <span>{product.description}</span>
+                  <span className="w-[140px] h-[23px] overflow-hidden">
+                    {product.description}...
+                  </span>
                 </div>
                 <div className="flex gap-2">
                   <h2 className="font-bold">Price:</h2>
@@ -69,11 +71,10 @@ const Products = () => {
             </Link>
           ))}
         </div>
+        {isLoading ? <LoaderSpinner color="red" secondaryColor="black" /> : ""}
       </div>
-      {isLoading ? <LoaderSpinner color="red" secondaryColor="black" /> : ""}
     </section>
   )
 }
 
 export default Products
-
