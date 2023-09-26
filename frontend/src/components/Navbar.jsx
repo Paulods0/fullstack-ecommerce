@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { CiShoppingCart, CiShop } from "react-icons/ci"
 import { useAuth } from "../context/auth"
 import UserModal from "./UserModal"
+import SearchInput from "./SearchInput"
 
 const Navbar = () => {
   const [isActive, setIsActive] = useState(null)
@@ -48,6 +49,9 @@ const Navbar = () => {
           <CiShop />
           <h1 className="font-bold ">ShopNest</h1>
         </Link>
+        <div className="">
+          <SearchInput />
+        </div>
         <ul className="flex gap-3 relative">
           {nav_links.map((link, index) => (
             <li key={index}>
@@ -64,7 +68,6 @@ const Navbar = () => {
               </Link>
             </li>
           ))}
-
           <div className="flex items-center">
             <CiShoppingCart className="text-[24px]" />
             (0)

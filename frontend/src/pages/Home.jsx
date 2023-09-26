@@ -5,6 +5,7 @@ import LoaderSpinner from "../components/LoaderSpinner"
 import { Link } from "react-router-dom"
 
 import { Prices } from "../utils/Prices"
+import ProductCard from "../components/ProductCard"
 
 const Home = () => {
   // const [auth, setAuth] = useAuth()
@@ -169,44 +170,7 @@ const Home = () => {
         <h1 className=" font-bold text-center text-4xl mb-6">All Products</h1>
         <div className="w-full grid grid-cols-3 gap-4">
           {products?.map((product) => (
-            <div key={product._id} className="w-full relative">
-              <div className="w-[308x] h-[250px]">
-                <img
-                  src={`http://localhost:8080/api/v1/product/product-photo/${product._id}`}
-                  alt="product-photo"
-                  className="w-full h-full object-cover rounded-t-md"
-                />
-              </div>
-              <div className="border border-zinc-500 rounded-b-md flex flex-col p-2 duration-200">
-                <div className="flex gap-2">
-                  <h2 className="font-bold">Name:</h2>
-                  <span>{product.name}</span>
-                </div>
-                <div className="flex gap-2 w-full overflow-x-auto">
-                  <h2 className="font-bold">Desc:</h2>
-                  <span className="w-full h-[23px] overflow-hidden">
-                    {product.description.substring(0, 30)}...
-                  </span>
-                </div>
-                <div className="flex gap-2 w-full overflow-x-auto">
-                  <h2 className="font-bold">Price:</h2>
-                  <span className="w-full h-[23px] overflow-hidden">
-                    ${product.price}
-                  </span>
-                </div>
-                <div className="flex gap-3 w-full mt-2">
-                  <Link
-                    to={`/dashboard/admin/product/${product.slug}`}
-                    className="w-full text-center p-2 bg-zinc-900 text-white rounded-md hover:scale-90 duration-200"
-                  >
-                    More Info
-                  </Link>
-                  <button className="w-full p-2 bg-zinc-900 text-white rounded-md hover:scale-90 duration-200">
-                    Add to cart
-                  </button>
-                </div>
-              </div>
-            </div>
+            <ProductCard product={product} />
           ))}
         </div>
         {products && products.length < total && (

@@ -236,6 +236,50 @@ const productListController = async (req, res) => {
   }
 }
 
+const searchProductController = async (req, res) => {
+  try {
+    const { keyword } = req.params
+    if (!keyword) {
+      return res.status(400).send({ message: "Error while searching" })
+    }
+    const product = await ProductModel.find({
+      $or: [
+        { name: { $regex: keyword, $options: "i" } },
+        { description: { $regex: keyword, $options: "i" } },
+      ],
+    }).select("-photo")
+
+    res.status(200).json(product)
+  } catch (error) {
+    console.log(error)
+    res.status(400).send({
+      success: false,
+      message: "Error while searching",
+      error,
+    })
+  }
+}
+
+const getRelatedProductController = async (req, res) => {
+  try {
+    const { productId, categoryId } = req.params
+    const products = await ProductModel.find({
+      categoy: categoryId,
+      _id: { $ne: productId },
+    })
+      .select("-photo")
+      .limit(3)
+      .populate("category")
+
+    res.status(200).send(products)
+  } catch (error) {
+    console.log(error)
+    res
+      .status(400)
+      .send({ message: "Error while fetching the similar products" })
+  }
+}
+
 module.exports = {
   createProduct,
   getAllProductController,
@@ -246,4 +290,6 @@ module.exports = {
   productFiltersController,
   productCountController,
   productListController,
+  searchProductController,
+  getRelatedProductController,
 }

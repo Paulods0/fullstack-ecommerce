@@ -8,6 +8,8 @@ const {
   productFiltersController,
   productCountController,
   productListController,
+  searchProductController,
+  getRelatedProductController,
 } = require("../controllers/productController")
 const { isAdmin, requireSignIn } = require("../middlewares/authMiddleware")
 const formidable = require("express-formidable")
@@ -43,4 +45,8 @@ router.post("/product-filters", productFiltersController)
 router.get("/product-count", productCountController)
 
 router.get("/product-list/:page", productListController)
+
+router.get("/search/:keyword", searchProductController)
+
+router.get("/related-product/:pid/:cid", getRelatedProductController)
 module.exports = router
