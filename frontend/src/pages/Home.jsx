@@ -120,7 +120,8 @@ const Home = () => {
 
   return (
     <main className="py-4 flex justify-between gap-4">
-      <section className="w-[300px] bg-zinc-200 p-2 rounded-md mb-10">
+      {/**Left Side */}
+      <section className="w-[300px] h-[450px] shadow-xl p-2 rounded-md mb-10">
         <h1 className="font-bold mb-4 text-2xl">Filter By Category</h1>
         <div className="w-full flex flex-col">
           {categories?.map((category) => (
@@ -158,7 +159,7 @@ const Home = () => {
           </div>
         </div>
         <button
-          className="w-full mt-6 rounded-md p-2 bg-red-600 text-white font-semibold"
+          className="w-full hover:scale-90 duration-200 mt-6 rounded-md p-2 bg-red-600 text-white font-semibold"
           onClick={() => {
             window.location.reload()
           }}
@@ -166,6 +167,7 @@ const Home = () => {
           Reset Filters
         </button>
       </section>
+      {/**Right Side */}
       <section className="w-full h-full">
         <h1 className=" font-bold text-center text-4xl mb-6">All Products</h1>
         <div className="w-full grid grid-cols-3 gap-4">

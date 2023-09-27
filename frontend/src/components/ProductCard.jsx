@@ -17,18 +17,12 @@ const ProductCard = ({ product }) => {
         />
       </div>
       <div className="rounded-b-md flex flex-col p-2 duration-200">
-        <ul className="flex flex-col w-full items-start justify-center">
+        <ul className="flex w-full items-center justify-around">
           <li className="font-bold text-[18px]">
-            <span className="font-semibold">Name:</span>
-            {product.name}
+            {product.name.substring(0, 20)}
+            {product.name.length >= 17 && <span>...</span>}
           </li>
-          <li className="text-[18px] flex ">
-            <span className="font-semibold">Desc:</span>
-            {product.description.substring(0, 30)}...
-          </li>
-          <li className="text-[18px]">
-            <span className="font-semibold">Price:</span>${product.price}
-          </li>
+          <li className="text-[18px]">Price: ${product.price}</li>
         </ul>
 
         <div className="flex gap-3 w-full mt-2">

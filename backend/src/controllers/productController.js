@@ -1,6 +1,7 @@
 const { default: slugify } = require("slugify")
 const ProductModel = require("../models/ProductModel")
 const fs = require("fs")
+const CategoryModel = require("../models/CategoryModel")
 
 const createProduct = async (req, res) => {
   try {
@@ -280,6 +281,19 @@ const getRelatedProductController = async (req, res) => {
   }
 }
 
+const productCategoryController = async (req, res) => {
+  const { slug } = req.params
+  try {
+    const category = await CategoryModel.findOne({ slug })
+    const product = await ProductModel.find({ category }).populate("category")
+
+    res.status(200).send({ success: true, product, category })
+  } catch (error) {
+    console.log(error)
+    res.status(400).send({ message: "Something went wrong", error })
+  }
+}
+
 module.exports = {
   createProduct,
   getAllProductController,
@@ -292,4 +306,5 @@ module.exports = {
   productListController,
   searchProductController,
   getRelatedProductController,
+  productCategoryController,
 }

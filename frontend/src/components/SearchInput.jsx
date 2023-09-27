@@ -23,7 +23,7 @@ const SearchInput = () => {
     <div className="w-[350px] flex gap-2">
       <form onSubmit={handleSumbit} className="w-full flex gap-1">
         <input
-          className="w-full px-2 py-[3px] outline-none border-2 text-black border-zinc-600 rounded-md"
+          className="w-full px-2 py-[3px] outline-none text-black border-2  border-zinc-200 focus:border-zinc-800 rounded-md"
           type="search"
           value={search.keyword}
           aria-label="Search"

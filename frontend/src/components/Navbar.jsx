@@ -4,11 +4,15 @@ import { CiShoppingCart, CiShop } from "react-icons/ci"
 import { useAuth } from "../context/auth"
 import UserModal from "./UserModal"
 import SearchInput from "./SearchInput"
+import useCategory from "../hooks/useCategory"
+
+import DropDownMenu from "./DropDownMenu"
 
 const Navbar = () => {
   const [isActive, setIsActive] = useState(null)
   const navigate = useNavigate()
   const [auth, setAuth] = useAuth()
+  const categories = useCategory()
 
   const handleLogout = async () => {
     await setAuth({ ...auth, user: null, token: "" }),
@@ -22,7 +26,7 @@ const Navbar = () => {
       path: "/home",
     },
     {
-      display: "Category",
+      display: <DropDownMenu categories={categories} />,
       path: "/category",
     },
     {
