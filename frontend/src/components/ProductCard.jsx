@@ -1,9 +1,12 @@
 import React from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { BsFillCartFill } from "react-icons/bs"
+import { useCart } from "../context/cart"
+import { toast } from "react-hot-toast"
 
 const ProductCard = ({ product }) => {
   const navigate = useNavigate()
+  const [cart, setCart] = useCart()
   return (
     <div key={product._id} className="w-full rounded-md shadow-xl relative">
       <div
@@ -26,7 +29,14 @@ const ProductCard = ({ product }) => {
         </ul>
 
         <div className="flex gap-3 w-full mt-2">
-          <button className="w-full p-2 flex gap-2 items-center justify-center bg-zinc-900 text-white rounded-md hover:scale-90 duration-200">
+          <button
+            onClick={() => {
+              setCart([...cart, product])
+              localStorage.setItem("cart", JSON.stringify([...cart, product]))
+              toast.success("Item added to cart")
+            }}
+            className="w-full p-2 flex gap-2 items-center justify-center bg-zinc-900 text-white rounded-md hover:scale-90 duration-200"
+          >
             Add to cart
             <span>
               <BsFillCartFill />

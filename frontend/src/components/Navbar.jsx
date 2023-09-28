@@ -7,12 +7,14 @@ import SearchInput from "./SearchInput"
 import useCategory from "../hooks/useCategory"
 
 import DropDownMenu from "./DropDownMenu"
+import { useCart } from "../context/cart"
 
 const Navbar = () => {
   const [isActive, setIsActive] = useState(null)
   const navigate = useNavigate()
   const [auth, setAuth] = useAuth()
   const categories = useCategory()
+  const [cart, setCart] = useCart()
 
   const handleLogout = async () => {
     await setAuth({ ...auth, user: null, token: "" }),
@@ -72,10 +74,12 @@ const Navbar = () => {
               </Link>
             </li>
           ))}
-          <div className="flex items-center">
+          <Link to="/cart" className="relative flex items-center">
             <CiShoppingCart className="text-[24px]" />
-            (0)
-          </div>
+            <div className="absolute -top-2 -right-4 w-[22px] h-[22px] flex items-center justify-center rounded-full bg-red-600 text-white text-sm">
+              {cart.length}
+            </div>
+          </Link>
         </ul>
       </nav>
     </header>
