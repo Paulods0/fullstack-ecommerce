@@ -190,6 +190,37 @@ const getAllUsers = async (req, res) => {
     })
   }
 }
+
+const updateUserController = async (req, res) => {
+  try {
+    const { email, name, address, password, phone } = req.body
+    const user = await UserModel.findById(req.user._id)
+    if (password && password.length < 6) {
+      return res.json({ error: "Password is required and 6 characters long" })
+    }
+    const hashedPassword = password ? hashPassword(password) : undefined
+    const updatedUser = await UserModel.findByIdAndUpdate(
+      req.user._id,
+      {
+        name: name || user.name,
+        password: hashedPassword || user.password,
+        phone: phone || user.phone,
+        address: address || user.address,
+      },
+      { new: true }
+    )
+    res
+      .status(200)
+      .send({ success: true, message: "Successfuly updated", updatedUser })
+  } catch (error) {
+    console.log(error)
+    res.status(400).send({
+      success: false,
+      message: "Error while updating user info",
+      error,
+    })
+  }
+}
 //test controller
 const testController = async (req, res) => {
   console.log("Protected route")
@@ -201,4 +232,5 @@ module.exports = {
   testController,
   forgotPasswordController,
   getAllUsers,
+  updateUserController,
 }

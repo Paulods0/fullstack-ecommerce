@@ -17,8 +17,13 @@ const Navbar = () => {
   const [cart, setCart] = useCart()
 
   const handleLogout = async () => {
-    await setAuth({ ...auth, user: null, token: "" }),
-      localStorage.removeItem("auth")
+    try {
+      await setAuth({ ...auth, user: null, token: "" }),
+        localStorage.removeItem("auth")
+      // setCart([])
+    } catch (error) {
+      console.log(error)
+    }
     navigate("/login")
   }
 
@@ -74,12 +79,14 @@ const Navbar = () => {
               </Link>
             </li>
           ))}
+          {/* {auth?.token && ( */}
           <Link to="/cart" className="relative flex items-center">
             <CiShoppingCart className="text-[24px]" />
             <div className="absolute -top-2 -right-4 w-[22px] h-[22px] flex items-center justify-center rounded-full bg-red-600 text-white text-sm">
               {cart.length}
             </div>
           </Link>
+          {/* )} */}
         </ul>
       </nav>
     </header>

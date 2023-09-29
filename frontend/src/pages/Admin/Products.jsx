@@ -32,7 +32,7 @@ const Products = () => {
   return (
     <section className="flex items-start h-[80vh] mt-4 gap-4 w-[1200px]">
       <AdminMenu />
-      <div className="relative w-[800px]  h-[400px] overflow-y-auto px-2">
+      <div className="relative w-[800px]  h-[520px] overflow-y-auto px-2">
         <h1 className="text-4xl mb-4 font-bold w-full">All Products list</h1>
         <div className="w-full grid grid-cols-3 gap-4">
           {products?.map((product) => (
