@@ -1,7 +1,18 @@
+require("dotenv").config()
 const { default: slugify } = require("slugify")
 const ProductModel = require("../models/ProductModel")
 const fs = require("fs")
 const CategoryModel = require("../models/CategoryModel")
+const braintree = require("braintree")
+const OrderModel = require("../models/OrderModel")
+
+//payment gateway
+var gateway = new braintree.BraintreeGateway({
+  environment: braintree.Environment.Sandbox,
+  merchantId: process.env.BRAINTREE_MERCHANT_ID,
+  publicKey: process.env.BRAINTREE_PUBLIC_KEY,
+  privateKey: process.env.BRAINTREE_PRIVATE_KEY,
+})
 
 const createProduct = async (req, res) => {
   try {
@@ -294,6 +305,52 @@ const productCategoryController = async (req, res) => {
   }
 }
 
+//payment gateway api
+const braintreeTokenController = async (req, res) => {
+  try {
+    gateway.clientToken.generate({}, function (err, response) {
+      if (err) {
+        res.status(500).send(err)
+      } else {
+        res.send(response)
+      }
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const braintreePaymentController = async (req, res) => {
+  try {
+    const { cart, nonce } = req.body
+    let total = 0
+    cart.map((item) => (total += item.price))
+    const newTransaction = gateway.transaction.sale(
+      {
+        amount: total,
+        paymentMethodNonce: nonce,
+        options: {
+          submitForSettlement: true,
+        },
+      },
+      function (error, result) {
+        if (result) {
+          const orders = new OrderModel({
+            products: cart,
+            payment: result,
+            buyer: req.user._id,
+          }).save()
+          res.json({ ok: true })
+        } else {
+          res.status(500).send(error)
+        }
+      }
+    )
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 module.exports = {
   createProduct,
   getAllProductController,
@@ -307,4 +364,6 @@ module.exports = {
   searchProductController,
   getRelatedProductController,
   productCategoryController,
+  braintreeTokenController,
+  braintreePaymentController,
 }

@@ -11,10 +11,9 @@ import { useAuth } from "../../context/auth.jsx"
 const Login = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
   const [auth, setAuth] = useAuth()
-
-  // const [] = useCookie()
 
   const data = {
     email,
@@ -23,6 +22,7 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    setIsLoading(true)
     try {
       const response = await api.post("/auth/login", data)
       console.log(response)
@@ -33,15 +33,18 @@ const Login = () => {
           token: response.data.token,
         })
         window.localStorage.setItem("auth", JSON.stringify(response.data))
+        setIsLoading(false)
         toast.success(response.data.message)
         navigate("/home")
         setEmail("")
         setPassword("")
       } else {
+        setIsLoading(false)
         console.log(response.data.error)
         toast.error(response.data.error)
       }
     } catch (error) {
+      setIsLoading(false)
       toast.error(error.response.data.message)
       console.log(error)
     }
@@ -90,9 +93,15 @@ const Login = () => {
                 />
               </div>
             </div>
-            <button className="mt-3 w-full bg-blue-600 px-2 py-1 text-white hover:scale-90 duration-200 transition-all">
-              Login
-            </button>
+            {!isLoading ? (
+              <button className="mt-3 w-full bg-blue-600 px-2 py-1 text-white hover:scale-90 duration-200 transition-all">
+                Login
+              </button>
+            ) : (
+              <button className="mt-3 w-full bg-blue-900 px-2 py-1 text-white hover:scale-90 duration-200 transition-all">
+                Loading...
+              </button>
+            )}
             <div className="flex flex-col items-center justify-center">
               <div className="flex w-full justify-center ">
                 {" "}
