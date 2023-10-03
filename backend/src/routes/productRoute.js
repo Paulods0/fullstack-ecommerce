@@ -13,6 +13,7 @@ const {
   productCategoryController,
   braintreeTokenController,
   braintreePaymentController,
+  getOrdersController,
 } = require("../controllers/productController")
 const { isAdmin, requireSignIn } = require("../middlewares/authMiddleware")
 const formidable = require("express-formidable")
@@ -58,5 +59,9 @@ router.get("/product-category/:slug", productCategoryController)
 router.get("/braintree/token", braintreeTokenController)
 
 router.post("/braintree/payment", requireSignIn, braintreePaymentController)
+
+router.get("/orders", requireSignIn, getOrdersController)
+
+router.get("/get-orders", requireSignIn, getOrdersController)
 
 module.exports = router

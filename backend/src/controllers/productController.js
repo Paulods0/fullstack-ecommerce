@@ -351,6 +351,23 @@ const braintreePaymentController = async (req, res) => {
   }
 }
 
+const getOrdersController = async (req, res) => {
+  try {
+    const orders = await OrderModel.find({ buyer: req.user._id })
+      .populate("products", "-photo")
+      .populate("buyer", "name")
+
+    res.status(200).json(orders)
+  } catch (error) {
+    console.log(error)
+    res.status(400).send({
+      success: false,
+      message: "Error while fetching the orders",
+      error,
+    })
+  }
+}
+
 module.exports = {
   createProduct,
   getAllProductController,
@@ -366,4 +383,5 @@ module.exports = {
   productCategoryController,
   braintreeTokenController,
   braintreePaymentController,
+  getOrdersController,
 }
