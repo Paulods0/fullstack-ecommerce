@@ -27,9 +27,15 @@ const AdminMenu = () => {
           </Link>
           <Link
             to="/dashboard/admin/users"
-            className="cursor-pointer text-semibold flex items-center justify-center h-full w-full hover:bg-zinc-900 hover:text-white text-xl "
+            className="cursor-pointer text-semibold flex items-center justify-center h-full w-full hover:bg-zinc-900 hover:text-white text-xl border-b border-b-zinc-800"
           >
             Users
+          </Link>
+          <Link
+            to="/dashboard/admin/orders"
+            className="cursor-pointer text-semibold flex items-center justify-center h-full w-full hover:bg-zinc-900 hover:text-white text-xl "
+          >
+            Orders
           </Link>
         </ul>
       </section>

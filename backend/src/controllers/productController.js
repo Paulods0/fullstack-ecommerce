@@ -368,6 +368,43 @@ const getOrdersController = async (req, res) => {
   }
 }
 
+const getAllOrdersController = async (req, res) => {
+  try {
+    const orders = await OrderModel.find({})
+      .populate("products", "-photo")
+      .populate("buyer", "name")
+      .sort({ createdAt: "-1" })
+    res.status(200).json(orders)
+  } catch (error) {
+    console.log(error)
+    res.status(400).json({
+      success: false,
+      message: "Error while fetching the orders",
+      error,
+    })
+  }
+}
+
+const orderStatusController = async (req, res) => {
+  try {
+    const { orderID } = req.params
+    const { status } = req.body
+    const order = await OrderModel.findOneAndUpdate(
+      { _id: orderID },
+      { status },
+      { new: true }
+    )
+    res.status(200).json(order)
+  } catch (error) {
+    console.log(error)
+    res.status(400).send({
+      success: false,
+      message: "Error while updating the order's status",
+      error,
+    })
+  }
+}
+
 module.exports = {
   createProduct,
   getAllProductController,
@@ -384,4 +421,6 @@ module.exports = {
   braintreeTokenController,
   braintreePaymentController,
   getOrdersController,
+  getAllOrdersController,
+  orderStatusController,
 }

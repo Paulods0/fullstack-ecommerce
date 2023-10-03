@@ -14,6 +14,8 @@ const {
   braintreeTokenController,
   braintreePaymentController,
   getOrdersController,
+  getAllOrdersController,
+  orderStatusController,
 } = require("../controllers/productController")
 const { isAdmin, requireSignIn } = require("../middlewares/authMiddleware")
 const formidable = require("express-formidable")
@@ -63,5 +65,10 @@ router.post("/braintree/payment", requireSignIn, braintreePaymentController)
 router.get("/orders", requireSignIn, getOrdersController)
 
 router.get("/get-orders", requireSignIn, getOrdersController)
+
+router.get("/all-orders", requireSignIn, isAdmin, getAllOrdersController)
+
+router.put("/order-status/:orderID", requireSignIn, isAdmin, orderStatusController)
+
 
 module.exports = router
